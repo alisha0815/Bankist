@@ -125,26 +125,28 @@ tabsContainer.addEventListener('click', function (e) {
 const nav = document.querySelector('.nav');
 
 // Refactoring
-const hoverHandler = function (e, opacity) {
+const hoverHandler = function (e) {
   if (e.target.classList.contains('nav__link')) {
+    console.log(this);
     const link = e.target;
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
     const logo = link.closest('.nav').querySelector('img');
 
     siblings.forEach(el => {
       if (el !== link) {
-        el.style.opacity = opacity;
+        // setting this keyword manually to opacity
+        el.style.opacity = this;
       }
-      logo.style.opacity = opacity;
+      logo.style.opacity = this;
     });
   }
 };
 // fading out
-nav.addEventListener('mouseover', function (e) {
-  hoverHandler(e, 0.5);
-});
+nav.addEventListener('mouseover', hoverHandler.bind(0.5));
+
+// nav.addEventListener('mouseover', function (e) {
+//   hoverHandler(e, 0.5);
+// });
 
 // getting back to opacity 1
-nav.addEventListener('mouseout', function (e) {
-  hoverHandler(e, 1);
-});
+nav.addEventListener('mouseout', hoverHandler.bind(1));
