@@ -33,3 +33,39 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+// Implementing smooth scrolling
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const sectionOne = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  const slcoords = sectionOne.getBoundingClientRect();
+  console.log(slcoords);
+
+  console.log(e.target.getBoundingClientRect());
+
+  // current get scroll position
+  console.log('Current scroll (X/Y)', window.pageXOffset, window.pageYOffset);
+
+  // height, width
+  console.log(
+    'height/width viewport',
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+
+  // scrolling
+  // window.scrollTo(
+  //   slcoords.left + window.pageXOffset,
+  //   slcoords.top + window.pageYOffset
+  // );
+
+  // window.scrollTo({
+  //   left: slcoords.left + window.pageXOffset,
+  //   top: slcoords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  // More modern way of scrolling
+  sectionOne.scrollIntoView({ behavior: 'smooth' });
+});
