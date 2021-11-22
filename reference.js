@@ -149,3 +149,36 @@ document.querySelector('.nav').addEventListener('click', function (e) {
   this.style.backgroundColor = randomColor();
   console.log('Nav', e.target, e.currentTarget);
 });
+
+// DOM Traversing
+const hOne = document.querySelector('h1');
+
+// Going downwards: Selecting child element
+console.log(hOne.querySelectorAll('.highlight'));
+// direct child
+console.log(hOne.childNodes);
+console.log(hOne.children);
+
+hOne.firstElementChild.style.color = 'white';
+hOne.lastElementChild.style.color = 'blue';
+
+// Going upwards: selecting parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+// closest parent element
+h1.closest('.header').style.background = 'var(--gradient-secondary)';
+
+h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// going sideways (selecting only direct siblings)
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+// Selecting all the siblings
+console.log(h1.parentElement.children);
+
+console.log(h1.parentElement.children);
+[...h1.parentElement.children].forEach(function (el) {
+  if (el !== 'h1') el.style.transform = 'scale(0.5)';
+});
