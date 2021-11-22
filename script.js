@@ -7,6 +7,8 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const sectionOne = document.querySelector('#section--1');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -34,10 +36,7 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// Implementing smooth scrolling
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const sectionOne = document.querySelector('#section--1');
-
+// Button Scrolling
 btnScrollTo.addEventListener('click', function (e) {
   const slcoords = sectionOne.getBoundingClientRect();
   console.log(slcoords);
@@ -68,4 +67,27 @@ btnScrollTo.addEventListener('click', function (e) {
 
   // More modern way of scrolling
   sectionOne.scrollIntoView({ behavior: 'smooth' });
+});
+
+// Page navigation
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const id = this.getAttribute('href');
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// event delegation
+// 1. Add event listener to common parent element
+// 2. Determine what element orginated the event
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  console.log(e.target); // where the event happned
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
 });
