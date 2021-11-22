@@ -127,7 +127,7 @@ const nav = document.querySelector('.nav');
 // Refactoring
 const hoverHandler = function (e) {
   if (e.target.classList.contains('nav__link')) {
-    console.log(this);
+    // console.log(this);
     const link = e.target;
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
     const logo = link.closest('.nav').querySelector('img');
@@ -150,3 +150,20 @@ nav.addEventListener('mouseover', hoverHandler.bind(0.5));
 
 // getting back to opacity 1
 nav.addEventListener('mouseout', hoverHandler.bind(1));
+
+// Sticky Navigation
+const initialCoords = sectionOne.getBoundingClientRect();
+console.log(initialCoords);
+
+window.addEventListener('scroll', function () {
+  //current scroll position
+  console.log(window.scrollY);
+
+  if (window.scrollY > initialCoords.top) {
+    nav.classList.add('sticky');
+  } else nav.classList.remove('sticky');
+});
+
+// window.addEventListener('scroll', function (e) {
+//   console.log(e);
+// });
