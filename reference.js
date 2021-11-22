@@ -107,3 +107,45 @@ logo.classList.contains('c'); //not includes
 
 //Don't use
 // logo.className = 'jonas'
+
+// Event Handlers
+const h1 = document.querySelector('h1');
+
+const alertH1 = function (e) {
+  alert('addEventListener: great!');
+  //   h1.removeEventListener('mouseenter', alertH1);
+};
+
+h1.addEventListener('mouseenter', alertH1);
+
+setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
+
+// Event bubbling
+// generating random number
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+// random color
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+
+console.log(randomColor(0, 255));
+
+// navlink bubbling
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('LINK', e.target, e.currentTarget);
+
+  // stop propagation
+  //   e.stopPropagation();
+});
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Container', e.target, e.currentTarget);
+});
+
+document.querySelector('.nav').addEventListener('click', function (e) {
+  this.style.backgroundColor = randomColor();
+  console.log('Nav', e.target, e.currentTarget);
+});
