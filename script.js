@@ -232,7 +232,7 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 
 allSections.forEach(function (section) {
   sectionObserver.observe(section);
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
 });
 
 /////////////////////////////////////////////////////////
@@ -265,3 +265,53 @@ const imgObserver = new IntersectionObserver(loadImg, {
 
 // loop over images
 imgTargets.forEach(img => imgObserver.observe(img));
+
+/////////////////////////////////////////////////////////
+////////////////////// Slider ///////////////////////////
+
+const slides = document.querySelectorAll('.slide');
+
+// buttons
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+
+// current slide
+let curSlide = 0;
+// tell js to stop sliding
+const maxSlide = slides.length;
+
+// scale down the slides for better view
+const slider = document.querySelector('.slider');
+slider.style.transform = 'scale(0.3) translateX(-1000px)'; //scaling down and moving to left
+slider.style.overflow = 'visible';
+
+// putting slides side by side
+slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+
+// Next slide
+btnRight.addEventListener('click', function () {
+  if (curSlide === maxSlide - 1) {
+    curSlide = 0;
+  } else {
+    curSlide++;
+  }
+
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
+  );
+});
+
+// Previous slide
+btnLeft.addEventListener('click', function () {
+  if (curSlide === maxSlide - 1) {
+    curSlide = 0;
+  } else {
+    curSlide--;
+  }
+
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
+  );
+});
+
+//the first slide should be 0%, second should be 100%, 200%...because translateX will basically move them to position 100%
