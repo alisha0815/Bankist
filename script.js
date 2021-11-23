@@ -152,36 +152,62 @@ nav.addEventListener('mouseover', hoverHandler.bind(0.5));
 nav.addEventListener('mouseout', hoverHandler.bind(1));
 
 // Sticky Navigation
-const initialCoords = sectionOne.getBoundingClientRect();
-console.log(initialCoords);
+// const initialCoords = sectionOne.getBoundingClientRect();
+// console.log(initialCoords);
 
-window.addEventListener('scroll', function () {
-  //current scroll position
-  console.log(window.scrollY);
+// window.addEventListener('scroll', function () {
+//   //current scroll position
+//   // console.log(window.scrollY);
 
-  if (window.scrollY > initialCoords.top) {
-    nav.classList.add('sticky');
-  } else nav.classList.remove('sticky');
-});
+//   if (window.scrollY > initialCoords.top) {
+//     nav.classList.add('sticky');
+//   } else nav.classList.remove('sticky');
+// });
 
 // window.addEventListener('scroll', function (e) {
 //   console.log(e);
 // });
 
+////////////////////////////////////////////////////////
+/////sticky navig ation by using intersection API //////
+////////////////////////////////////////////////////////
+const header = document.querySelector('.header');
+
+// calculating nav hegiht
+const navHeight = nav.getBoundingClientRect().height;
+
+//callback function
+const stickyNav = function (entries) {
+  const [entry] = entries; //entries[0]
+  console.log(entry);
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+// createing observer
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+
+headerObserver.observe(header);
 // creating new intersection observer
 // callback function for observer
 // this call back function will be called each time that the observed element (our target element) is intersecting the root element at the threshold
 // whenever our target element is intersecting the viewport at 10%, this function will get called no matter if we are scrolling up or down
 // entries are an array of the threshold entries
-const obsCallback = function (entries, observer) {
-  entries.forEach(entry => console.log(entry));
-};
+// const obsCallback = function (entries, observer) {
+//   entries.forEach(entry => console.log(entry));
+// };
 
-const obsOptions = {
-  root: null,
-  threshold: 0.1, //the percentage of intersection at which the observer callback will becalled
-};
+// const obsOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+//   // threshold: 0.1, //the percentage of intersection at which the observer callback will becalled
+// };
 
-// objects for observer
-const observer = new IntersectionObserver(obsCallback, obsOptions);
-observer.observe(sectionOne);
+// // objects for observer
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(sectionOne);
