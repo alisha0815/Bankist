@@ -274,6 +274,33 @@ const slides = document.querySelectorAll('.slide');
 // buttons
 const btnLeft = document.querySelector('.slider__btn--left');
 const btnRight = document.querySelector('.slider__btn--right');
+//dot
+const dotContainer = document.querySelector('.dots');
+
+// function for creating dots
+const createDots = function () {
+  slides.forEach(function (_, i) {
+    dotContainer.insertAdjacentHTML(
+      'beforeend',
+      `<button class="dots__dot" data-slide = ${i}></button>`
+    );
+  });
+};
+
+createDots();
+
+// activate dots
+const activateDot = function (slide) {
+  document
+    .querySelectorAll('.dots__dot')
+    .forEach(dot => dot.classList.remove('dots__dot--active')); //deactivating the activate class
+
+  document
+    .querySelector(`.dots__dot[data-slide = "${slide}"]`)
+    .classList.add('dots__dot--active');
+};
+
+activateDot(0);
 
 // current slide
 let curSlide = 0;
@@ -305,6 +332,7 @@ const nextSlide = function () {
     curSlide++;
   }
   goToSlide(curSlide);
+  activateDot(curSlide);
 };
 // function for previous slide
 const prevSlide = function () {
@@ -315,6 +343,7 @@ const prevSlide = function () {
   }
 
   goToSlide(curSlide);
+  activateDot(curSlide);
 };
 // Next slide
 btnRight.addEventListener('click', nextSlide);
@@ -323,3 +352,22 @@ btnRight.addEventListener('click', nextSlide);
 btnLeft.addEventListener('click', prevSlide);
 
 //the first slide should be 0%, second should be 100%, 200%...because translateX will basically move them to position 100%
+
+// keyboard event
+document.addEventListener('keydown', function (e) {
+  console.log(e);
+  if (e.key === 'ArrowLeft') prevSlide();
+  // short circuiting
+  e.key === 'ArrowRight' && nextSlide();
+});
+
+// dot event handler
+dotContainer.addEventListener('click', function (e) {
+  if (e.target.classList.contains('dots__dot')) {
+    // const slide = e.target.dataset.slide;
+    const { slide } = e.target.dataset;
+    goToSlide(slide);
+    console.log(e.target.dataset); //{slide: '2'}
+    activateDot(slide);
+  }
+});
