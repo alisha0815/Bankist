@@ -167,3 +167,21 @@ window.addEventListener('scroll', function () {
 // window.addEventListener('scroll', function (e) {
 //   console.log(e);
 // });
+
+// creating new intersection observer
+// callback function for observer
+// this call back function will be called each time that the observed element (our target element) is intersecting the root element at the threshold
+// whenever our target element is intersecting the viewport at 10%, this function will get called no matter if we are scrolling up or down
+// entries are an array of the threshold entries
+const obsCallback = function (entries, observer) {
+  entries.forEach(entry => console.log(entry));
+};
+
+const obsOptions = {
+  root: null,
+  threshold: 0.1, //the percentage of intersection at which the observer callback will becalled
+};
+
+// objects for observer
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(sectionOne);
