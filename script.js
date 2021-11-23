@@ -281,37 +281,45 @@ let curSlide = 0;
 const maxSlide = slides.length;
 
 // scale down the slides for better view
-const slider = document.querySelector('.slider');
-slider.style.transform = 'scale(0.3) translateX(-1000px)'; //scaling down and moving to left
-slider.style.overflow = 'visible';
+// const slider = document.querySelector('.slider');
+// slider.style.transform = 'scale(0.3) translateX(-1000px)'; //scaling down and moving to left
+// slider.style.overflow = 'visible';
 
 // putting slides side by side
 slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
 
-// Next slide
-btnRight.addEventListener('click', function () {
+// function for moving to next slide
+const goToSlide = function (slide) {
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+  );
+};
+
+goToSlide(0);
+
+// function for next slide
+const nextSlide = function () {
   if (curSlide === maxSlide - 1) {
     curSlide = 0;
   } else {
     curSlide++;
   }
-
-  slides.forEach(
-    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
-  );
-});
-
-// Previous slide
-btnLeft.addEventListener('click', function () {
-  if (curSlide === maxSlide - 1) {
-    curSlide = 0;
+  goToSlide(curSlide);
+};
+// function for previous slide
+const prevSlide = function () {
+  if (curSlide === 0) {
+    curSlide = maxSlide - 1;
   } else {
     curSlide--;
   }
 
-  slides.forEach(
-    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
-  );
-});
+  goToSlide(curSlide);
+};
+// Next slide
+btnRight.addEventListener('click', nextSlide);
+
+// Previous slide
+btnLeft.addEventListener('click', prevSlide);
 
 //the first slide should be 0%, second should be 100%, 200%...because translateX will basically move them to position 100%
