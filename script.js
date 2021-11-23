@@ -269,105 +269,111 @@ imgTargets.forEach(img => imgObserver.observe(img));
 /////////////////////////////////////////////////////////
 ////////////////////// Slider ///////////////////////////
 
-const slides = document.querySelectorAll('.slide');
+const slider = function () {
+  const slides = document.querySelectorAll('.slide');
+  // buttons
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  //dot
+  const dotContainer = document.querySelector('.dots');
 
-// buttons
-const btnLeft = document.querySelector('.slider__btn--left');
-const btnRight = document.querySelector('.slider__btn--right');
-//dot
-const dotContainer = document.querySelector('.dots');
+  // current slide
+  let curSlide = 0;
+  // tell js to stop sliding
+  const maxSlide = slides.length;
 
-// function for creating dots
-const createDots = function () {
-  slides.forEach(function (_, i) {
-    dotContainer.insertAdjacentHTML(
-      'beforeend',
-      `<button class="dots__dot" data-slide = ${i}></button>`
+  // Functions
+  // function for creating dots
+  const createDots = function () {
+    slides.forEach(function (_, i) {
+      dotContainer.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide = ${i}></button>`
+      );
+    });
+  };
+
+  // activate dots
+  const activateDot = function (slide) {
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(dot => dot.classList.remove('dots__dot--active')); //deactivating the activate class
+
+    document
+      .querySelector(`.dots__dot[data-slide = "${slide}"]`)
+      .classList.add('dots__dot--active');
+  };
+
+  // scale down the slides for better view
+  // const slider = document.querySelector('.slider');
+  // slider.style.transform = 'scale(0.3) translateX(-1000px)'; //scaling down and moving to left
+  // slider.style.overflow = 'visible';
+
+  // putting slides side by side
+  slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+
+  // function for moving to next slide
+  const goToSlide = function (slide) {
+    slides.forEach(
+      (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
     );
+  };
+
+  // function for next slide
+  const nextSlide = function () {
+    if (curSlide === maxSlide - 1) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+  // function for previous slide
+  const prevSlide = function () {
+    if (curSlide === 0) {
+      curSlide = maxSlide - 1;
+    } else {
+      curSlide--;
+    }
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  // init function
+  const init = function () {
+    createDots();
+    goToSlide(0);
+    activateDot(0);
+  };
+
+  init();
+
+  // Event handlers
+  btnRight.addEventListener('click', nextSlide); // Next slide
+  btnLeft.addEventListener('click', prevSlide); // Previous slide
+
+  //the first slide should be 0%, second should be 100%, 200%...because translateX will basically move them to position 100%
+
+  // keyboard event
+  document.addEventListener('keydown', function (e) {
+    console.log(e);
+    if (e.key === 'ArrowLeft') prevSlide();
+    // short circuiting
+    e.key === 'ArrowRight' && nextSlide();
+  });
+
+  // dot event handler
+  dotContainer.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dots__dot')) {
+      // const slide = e.target.dataset.slide;
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      console.log(e.target.dataset); //{slide: '2'}
+      activateDot(slide);
+    }
   });
 };
 
-createDots();
-
-// activate dots
-const activateDot = function (slide) {
-  document
-    .querySelectorAll('.dots__dot')
-    .forEach(dot => dot.classList.remove('dots__dot--active')); //deactivating the activate class
-
-  document
-    .querySelector(`.dots__dot[data-slide = "${slide}"]`)
-    .classList.add('dots__dot--active');
-};
-
-activateDot(0);
-
-// current slide
-let curSlide = 0;
-// tell js to stop sliding
-const maxSlide = slides.length;
-
-// scale down the slides for better view
-// const slider = document.querySelector('.slider');
-// slider.style.transform = 'scale(0.3) translateX(-1000px)'; //scaling down and moving to left
-// slider.style.overflow = 'visible';
-
-// putting slides side by side
-slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
-
-// function for moving to next slide
-const goToSlide = function (slide) {
-  slides.forEach(
-    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
-  );
-};
-
-goToSlide(0);
-
-// function for next slide
-const nextSlide = function () {
-  if (curSlide === maxSlide - 1) {
-    curSlide = 0;
-  } else {
-    curSlide++;
-  }
-  goToSlide(curSlide);
-  activateDot(curSlide);
-};
-// function for previous slide
-const prevSlide = function () {
-  if (curSlide === 0) {
-    curSlide = maxSlide - 1;
-  } else {
-    curSlide--;
-  }
-
-  goToSlide(curSlide);
-  activateDot(curSlide);
-};
-// Next slide
-btnRight.addEventListener('click', nextSlide);
-
-// Previous slide
-btnLeft.addEventListener('click', prevSlide);
-
-//the first slide should be 0%, second should be 100%, 200%...because translateX will basically move them to position 100%
-
-// keyboard event
-document.addEventListener('keydown', function (e) {
-  console.log(e);
-  if (e.key === 'ArrowLeft') prevSlide();
-  // short circuiting
-  e.key === 'ArrowRight' && nextSlide();
-});
-
-// dot event handler
-dotContainer.addEventListener('click', function (e) {
-  if (e.target.classList.contains('dots__dot')) {
-    // const slide = e.target.dataset.slide;
-    const { slide } = e.target.dataset;
-    goToSlide(slide);
-    console.log(e.target.dataset); //{slide: '2'}
-    activateDot(slide);
-  }
-});
+slider();
